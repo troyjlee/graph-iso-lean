@@ -116,8 +116,17 @@ results):
 * Eugene M. Luks, *Isomorphism of graphs of bounded valence can be tested in polynomial time*,
   J. Comput. System Sci. 25 (1982): the framework of the earlier milestones.
 
-We know of no earlier formalization of Babai's algorithm in a proof assistant; this rests on a
-brief search, not a systematic review.
+## Related formalizations
+
+The Theo project reports a separate Lean formalization of Babai's result in
+[*Beyond the Library: An Agentic Framework for Autoformalizing Research Mathematics*](https://openreview.net/forum?id=XF8jQ5EnrA),
+§3.2.9 and Appendix C.10. It covers String Isomorphism, including search, and derives Graph
+Isomorphism and Coset Intersection, with quasipolynomial RAM time measured in encoded input
+length. Its public source declares the five cited group-theoretic assumptions listed in the
+paper, beyond Lean's standard axioms. This submission proves the graph decision and coset-output
+statements on a single-tape machine, with a bound in vertex count and only `propext`,
+`Quot.sound` and `Classical.choice`, through a classification-free route. The formalization notes give the
+comparison and its verification limits. We make no priority claim.
 
 ## How it was made
 

@@ -103,6 +103,70 @@ Divergences:
 * **Scope.** Graph isomorphism and its coset of isomorphisms are covered, through string
   isomorphism under a group. Canonical forms (Babai's later canonization) are not.
 
+### Related formalization: Theo
+
+The Theo project reports a separate Lean development in
+[*Beyond the Library: An Agentic Framework for Autoformalizing Research Mathematics*](https://openreview.net/forum?id=XF8jQ5EnrA),
+§3.2.9 and Appendix C.10 of the ICLR 2027 submission. It follows Babai's version 2.5 of
+2 November 2018. The comparison below uses that paper and the project's
+[public source archive](https://github.com/BeyondTheLibrary/formal_archive/tree/2ff27f984baa1f0f5c9031fb6eb2302f89ab4afa/files/GraphIsomorphism/lean_workspace),
+inspected at commit `2ff27f984baa1f0f5c9031fb6eb2302f89ab4afa`. This was a source inspection;
+the Theo development was not rebuilt or replayed in independent kernels here.
+
+| Aspect | Theo's paper and source | This submission |
+|---|---|---|
+| Advertised results | String Isomorphism, including an isomorphism representative and automorphism generators; Graph Isomorphism and Coset Intersection | Graph-isomorphism decision, the coset of all graph isomorphisms, and injectivity of the output encoding |
+| Machine bound | Quasipolynomial RAM time in encoded input length | Single-tape `TM0` transitions bounded by `2 ^ (c (⌊log₂ n⌋ + 1) ^ 8)` in vertex count |
+| Assumptions beyond `propext`, `Quot.sound`, `Classical.choice` | Five cited group-theoretic inputs | None |
+
+The public code contains `Algo.theorem_1_1_1` (String Isomorphism search) and
+`Algo.corollary_1_1_2` (Graph Isomorphism and Coset Intersection decision) in the
+[main theorem file](https://github.com/BeyondTheLibrary/formal_archive/blob/2ff27f984baa1f0f5c9031fb6eb2302f89ab4afa/files/GraphIsomorphism/lean_workspace/Workspace/Algo/TopMasterClose.lean).
+Its RAM has explicit instruction and execution semantics. Its
+[graph input encoding](https://github.com/BeyondTheLibrary/formal_archive/blob/2ff27f984baa1f0f5c9031fb6eb2302f89ab4afa/files/GraphIsomorphism/lean_workspace/Workspace/Machine/TargetsGI.lean)
+also proves that encoded length and vertex count are polynomially related
+(`RAM.Targets.GIInput.size_bounds`), so this parameter difference does not distinguish the
+quasipolynomial complexity class. The distinctions are the formal machine model, the fixed
+logarithmic exponent in our bound, and the additional assumptions.
+
+The five inputs listed in Appendix C.10 are the Cameron–Maróti theorem on large primitive
+groups, polynomial-time computation of Cameron-group structure, the degree-of-transitivity
+bound for non-giant groups, the bound on alternating groups involved in general linear groups,
+and Schreier's hypothesis. The public source declares these as `Babai.Theorem_11_2_3`,
+`Babai.cameronStructure_polyTime`, `Babai.degtrans_le_five`,
+`Babai.le_add_two_of_involved_GL` and `Babai.schreierHypothesis`, respectively. A static scan
+of the downloaded source found these five `axiom` declarations and no `sorry` or `admit`
+tokens outside comments and strings; this is not a kernel dependency audit. This project's
+classification-free route uses the proved Pyber bound and an elementary transitivity bound
+(§4 above).
+
+Appendix C.10 also reports three gaps and repairs in Babai's 2018 manuscript. The corresponding
+parts of this project's design are:
+
+* **Jordan–Liebeck exceptions.** The paper restores exceptional alternatives omitted from the
+  printed statement. This project's labelled-hint recursion avoids the Main Structure Theorem
+  and Jordan–Liebeck theorem (`PLAN-14.md` §1).
+* **Transitivity after descent.** The paper rechecks transitivity and applies the Chain Rule
+  when it is lost. Here, `HInstValid.hint` requires transitivity whenever a hint is present
+  (`Main/HInst.lean`); `orbit_child` handles restriction to a subgroup and a smaller window
+  (`Recursion/Hint.lean`). Transitivity of the parent alone does not supply the child's invariant.
+* **Progress when the Johnson parameter is one.** The paper replaces a claimed `2n/3` window
+  bound by `4n/5`. Here progress is proved with a separate base/window potential:
+  `StepChild` explicitly requires a hinted base of at most `3m/4` or an unhinted window of at
+  most `n/2` (`Main/Frame.lean`, `Recursion/Potential.lean`). The colored-partition progress
+  theorem explicitly handles an orbit lying in a single block (`Recursion/Progress.lean`).
+
+These are correspondences between the proof designs, not a new exhaustive audit of either
+development. No Lean statement or proof was changed as part of this comparison.
+
+This related work was identified on 29 October 2026, during submission preparation, after the
+three statements of record had been proved. It was not an input to this development. The
+earlier README sentence reporting no known prior formalization has been removed; no priority
+claim is made. The abstract of the indexed [arXiv version 3](https://arxiv.org/abs/2606.31134v3),
+dated 5 August 2026, describes seven case studies and does not mention Babai; the supplied
+OpenReview paper describes nine. That version difference may have contributed to the search
+miss, but the original brief search was insufficient to support the withdrawn statement.
+
 ## 5. How the development was produced and checked
 
 The development took place from 18 to 29 October 2026. The Lean code, the plans and the initial

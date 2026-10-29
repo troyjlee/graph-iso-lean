@@ -80,7 +80,24 @@ sources:
       Luks's framework, on which Babai's algorithm builds; the earlier milestones formalize it,
       and its bounded-valence theorem.
 
-related_formalizations: []
+related_formalizations:
+  - id: "https://openreview.net/forum?id=XF8jQ5EnrA"
+    relationship: independent
+    note: >-
+      The Theo project, Beyond the Library: An Agentic Framework for Autoformalizing Research
+      Mathematics, reports a separate Lean formalization of Babai's 2018 version 2.5 in section
+      3.2.9 and Appendix C.10: String Isomorphism including search, Graph Isomorphism and Coset
+      Intersection, with quasipolynomial RAM time in encoded input length and five cited
+      group-theoretic assumptions beyond Lean's standard axioms. Our advertised endpoints are
+      graph decision and coset output on a single-tape Turing machine, with a bound in vertex
+      count, via a classification-free proof using only propext, Quot.sound and Classical.choice.
+      Identified during submission preparation on 29 October 2026; this development does not
+      import or adapt Theo's code. The comparison uses the supplied OpenReview paper and a source
+      inspection of BeyondTheLibrary/formal_archive at commit
+      2ff27f984baa1f0f5c9031fb6eb2302f89ab4afa; the Theo development was not rebuilt or independently
+      replayed here. Its graph encoding is polynomially related to vertex count, so the size
+      parameter does not distinguish the quasipolynomial complexity class. No priority claim is
+      made. See lean/docs/formalization-notes.md.
 
 status:
   scope: >-

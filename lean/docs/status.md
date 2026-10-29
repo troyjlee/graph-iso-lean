@@ -32,7 +32,28 @@ metadata say so. No Lean statement or proof changes.
 `DRAFT` line, so `palomar-snapshot.sh` now writes final snapshots of a committed tree. Stage 19f
 (publication, hosted preflight, submission) remains the author's.
 
-Follow-up validation: all 14 command-level controls pass in a disposable committed repository,
+**Related-work correction (29 October).** The author identified the Theo project's
+[*Beyond the Library*](https://openreview.net/forum?id=XF8jQ5EnrA), whose OpenReview version
+reports a Lean formalization of Babai's String Isomorphism, Graph Isomorphism and Coset
+Intersection results, including a RAM-time bound and five cited group-theoretic assumptions.
+The README's no-known-prior-formalization sentence is removed, the metadata now records this
+independent related formalization, and `docs/formalization-notes.md` compares the scope,
+assumptions and three reported source repairs. The comparison uses the supplied paper and a
+source inspection of the public archive at commit `2ff27f984baa1f0f5c9031fb6eb2302f89ab4afa`;
+Theo's development was not rebuilt or replayed here. Its code confirms the theorem statements,
+five additional axiom declarations, and the polynomial relation between graph encoding length
+and vertex count. The earlier indexed arXiv abstract describes seven case studies without
+mentioning Babai, while the supplied paper covers nine;
+the earlier search nevertheless did not justify the withdrawn sentence. No priority claim is
+made. The confirmed author, licence and review-history fields are unchanged, as are all Lean
+sources and statements.
+
+Related-work validation: the revised snapshot passes its local-reference checks, the current
+Palomar source and metadata checks, and the template metadata validator. Its 430 Lean files
+and four build/configuration files match the previously verified snapshot byte for byte; no
+Lean build or kernel replay was repeated for this documentation change.
+
+F3 follow-up validation: all 14 command-level controls pass in a disposable committed repository,
 including a final-mode baseline, the reported bypasses, a multiline Lean-comment reference,
 untracked-file exclusion, containment, literal code, dirty/staged source rejection, and the
 draft guard. The parser regression suite passes. All 430 Lean files and the four build and
@@ -99,8 +120,8 @@ independent audit round.
    building and checking), `docs/formalization-notes.md` (the results and where they are
    stated, the trust surface, the milestones and their sources, the divergences, the production
    and checking process with counts, reproduction), and `Statement.lean`'s docstring, which now
-   names the snapshot script. A brief search found no earlier formalization of Babai's
-   algorithm; the README says that it was only brief.
+   names the snapshot script. The original brief-search statement about earlier formalizations
+   was withdrawn after the related-work correction above.
 5. **The metadata draft** (`palomar/formalization.yaml`, D5). Every field is filled, and the
    file starts with a `DRAFT` line, so `palomar-snapshot.sh` writes only `--draft` snapshots
    until the author removes it. The author confirms: authors and responsible maintainers (the
