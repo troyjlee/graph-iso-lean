@@ -1,0 +1,31 @@
+name = "GraphIso"
+version = "0.1.0"
+description = "Babai's quasipolynomial graph-isomorphism algorithm without CFSG: string isomorphism under permutation groups with explicit operation costs, and its simulation on Turing machines"
+defaultTargets = ["GraphIso", "Solution"]
+
+[[require]]
+name = "mathlib"
+scope = "leanprover-community"
+rev = "065356127b1dc0016f66b7283ce0ce2c4055aa55"
+
+[[lean_lib]]
+name = "GraphIso"
+[lean_lib.leanOptions]
+autoImplicit = false
+
+[[lean_lib]]
+name = "GraphIsoChecks"
+[lean_lib.leanOptions]
+autoImplicit = false
+
+[[lean_lib]]
+name = "Challenge"
+roots = ["Challenge"]
+[lean_lib.leanOptions]
+autoImplicit = false
+
+[[lean_lib]]
+name = "Solution"
+roots = ["Solution"]
+[lean_lib.leanOptions]
+autoImplicit = false

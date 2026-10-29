@@ -1,0 +1,186 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/main/schema/formalization.schema.json
+# formalization.yaml v0.4, for the Palomar registry (PLAN-19.md §7).
+version: "v0.4"
+
+project:
+  name: "Graph isomorphism in quasipolynomial time on a single-tape Turing machine"
+  description: >-
+    A Lean 4 and Mathlib formalization of Babai's quasipolynomial-time algorithm for graph
+    isomorphism, without the classification of finite simple groups, carried down to Turing
+    machines. There is a single-tape Turing machine (Mathlib's Turing.TM0) that decides whether
+    two simple graphs on n vertices, given in a fixed encoding, are isomorphic within
+    2^(c (floor(log2 n) + 1)^8) transitions, and another that within the same bound outputs
+    either "not isomorphic" or an isomorphism τ together with generators of a subgroup whose left
+    coset by τ is exactly the set of all isomorphisms. The algorithm (Luks's framework,
+    Schreier–Sims, Weisfeiler–Leman refinement and the Design Lemma, Split-or-Johnson, local
+    certificates and Babai's recursion, with Pyber's analysis in place of the classification),
+    its cost in an executed cost model, and its compilation to multi-stack and then single-tape
+    machines are all proved in Lean.
+  authors:
+    - "Troy Lee"
+  license: "Apache-2.0"
+  responsible_maintainers:
+    - "Troy Lee"
+
+classification:
+  arxiv: [cs.DS, cs.CC, math.CO, math.GR]
+  msc2020: [68Q25, 05C60, 20-08, 20B15, 68V20]
+
+sources:
+  - title: "Graph Isomorphism in Quasipolynomial Time"
+    authors:
+      - "László Babai"
+    id: "arXiv:1512.03547"
+    type: paper
+    location: "https://arxiv.org/abs/1512.03547"
+    relationship: adapts
+    note: >-
+      The algorithm that is formalized. Adapted: the classification of finite simple groups is
+      replaced (see the next sources and fidelity.divergences), the running time is proved with
+      the exponent 8 of this formalization's own accounting, and the machine model is Mathlib's
+      single-tape Turing machine.
+  - title: "Fixing the UPCC case of Split-or-Johnson"
+    authors:
+      - "László Babai"
+    type: other
+    location: "https://people.cs.uchicago.edu/~laci/upcc-fix.pdf"
+    relationship: adapts
+    note: >-
+      A note of 14 January 2017 correcting the analysis of Split-or-Johnson; the corrected
+      procedure is the one formalized (milestone 11).
+  - title: "A CFSG-free analysis of Babai's quasipolynomial GI-algorithm"
+    authors:
+      - "László Pyber"
+    id: "arXiv:1605.08266"
+    type: paper
+    location: "https://arxiv.org/abs/1605.08266"
+    relationship: adapts
+    note: >-
+      Theorem 7 and Lemma 12 give the weak form of the alternating-quotient lemma (for
+      k > (log2 n)^5) that replaces the classification of finite simple groups.
+  - title: "Graph isomorphisms in quasi-polynomial time"
+    authors:
+      - "Harald Andrés Helfgott"
+      - "Jitendra Bajpai"
+      - "Daniele Dona"
+    id: "arXiv:1710.04574"
+    type: paper
+    location: "https://arxiv.org/abs/1710.04574"
+    relationship: adapts
+    note: >-
+      The English version of Helfgott's Séminaire Bourbaki exposé 1125, whose presentation of
+      Babai's algorithm the formalization follows for many steps.
+  - title: "Isomorphism of graphs of bounded valence can be tested in polynomial time"
+    authors:
+      - "Eugene M. Luks"
+    type: paper
+    location: "J. Comput. System Sci. 25 (1982), 42–65"
+    relationship: background
+    note: >-
+      Luks's framework, on which Babai's algorithm builds; the earlier milestones formalize it,
+      and its bounded-valence theorem.
+
+related_formalizations: []
+
+status:
+  scope: >-
+    Formalized and proved: the three advertised theorems (lean/Challenge.lean): the decision
+    machine (gi_singleTape), the machine returning the coset of all isomorphisms
+    (gi_coset_singleTape), and the injectivity of the coset machine's output encoding
+    (cosetWord_injective); and the library behind them, including the algorithm's correctness and
+    cost in a cost model, its compilation to multi-stack Turing machines, and the compilation to
+    single-tape machines. Not claimed: anything about inputs that encode no pair of graphs; an
+    explicit constant c; the best exponent (8 is this formalization's); canonical forms.
+  sorry_count: 0
+  sorry_in_definitions: 0
+  axioms: []
+
+automation:
+  methods:
+    - method: agent
+      models:
+        - "Claude Opus 5.5 (claude-opus-5-5)"
+      framework: "Claude Code"
+      tool_setup: >-
+        The agent wrote the Lean code, milestone plans and initial documentation, building and
+        checking locally. From milestone 7, a write-audit loop (lean-loop) used a mechanical
+        gate (full build with warnings as errors, axiom check, banned constructs, protected
+        theorem statements) and adversarial audits.
+      cost:
+        wall_time: "18 to 29 October 2026"
+        spend_usd: "not tracked"
+        hardware: "local machine (kernel checks of up to about 40 GB of memory)"
+      prompting_notes: >-
+        The author set the goals and made the decisions recorded in each plan; the agent drafted
+        the plans, which the author approved, and implemented them stage by stage.
+    - method: agent
+      models:
+        - "gpt-6-astra at maximum effort (OpenAI Codex)"
+        - "OpenAI Codex for submission preparation (exact model identifier not recorded)"
+      framework: "OpenAI Codex; lean-loop for the stage audits from milestone 7"
+      tool_setup: >-
+        Milestones 1-6 were reviewed by Codex, the author passing the messages between Claude
+        Code and Codex by hand. From milestone 7 on, adversarial audits
+        of every stage through lean-loop: read access to the repository, its own Lean probes in
+        a scratch folder, findings answered before approval or escalated after three rounds.
+        Codex later repaired the snapshot reference checker and revised the submission
+        documentation and metadata; no Lean statement or proof changed.
+  spend_usd: "not tracked"
+  notes: >-
+    AI agents wrote and audited the development; the author directed it, made its decisions and
+    approved the plans and the advertised statements. The Lean proofs were not reviewed line by
+    line by a person. See lean/docs/formalization-notes.md, section 5.
+
+fidelity:
+  divergences: >-
+    No use of the classification of finite simple groups: the alternating-quotient lemma is used
+    in Pyber's weak form (k > (log2 n)^5), and Cameron's theorem on large primitive groups is
+    replaced by Babai's argument in his section 13.1 with an elementary transitivity bound. The
+    time bound has the exponent 8 of this formalization's accounting and an existential
+    constant. Helfgott, Bajpai and Dona obtain exp(O((log n)^3)) with an analysis that uses the
+    classification; the classification-free route followed here gives a weaker quasipolynomial
+    bound, whose exponent the sources do not compute. The model is Mathlib's single-tape Turing
+    machine with fixed encodings of inputs and outputs, not a RAM; nothing is claimed on malformed
+    inputs. Canonical forms are not covered.
+
+review:
+  status: "agent-reviewed"
+  reviewers:
+    - "OpenAI Codex (gpt-6-astra at maximum effort), reviews and automated adversarial audits"
+  notes: >-
+    Milestones 1-6 were reviewed by Codex, the author passing the messages between the agents
+    by hand. From milestone 7 on, stages ran through a mechanical gate and adversarial
+    Codex audits (89 audit rounds by stage 19e; 57 loops approved, two escalated, two
+    abandoned). The remaining stage 19e finding concerned the snapshot reference checker and
+    was repaired in submission preparation with regression checks. The statements of record
+    were drafted in PLAN-19.md and approved by the author. No human line-by-line review of the
+    proofs. Mechanical checks: Lean's kernel, an axiom audit of every declaration, and
+    Comparator with independent kernels.
+
+alignment:
+  namespace: "GraphIsoPalomar"
+  statements:
+    - source: "Babai, arXiv:1512.03547: graph isomorphism is decidable in quasipolynomial time"
+      lean: "GraphIsoPalomar.gi_singleTape"
+      module: "Challenge"
+      status: "adapted"
+      note: >-
+        Stated for Mathlib's single-tape Turing machine with a fixed input encoding, with the
+        bound 2^(c (floor(log2 n) + 1)^8) in the number n of vertices, without the
+        classification of finite simple groups.
+    - source: "Babai, arXiv:1512.03547: the coset of isomorphisms is found in quasipolynomial time"
+      lean: "GraphIsoPalomar.gi_coset_singleTape"
+      module: "Challenge"
+      status: "adapted"
+      note: >-
+        The machine outputs "not isomorphic", or an isomorphism τ and generators of a subgroup
+        whose left coset by τ is exactly the set of all isomorphisms, within the same bound.
+    - source: "No counterpart: a property of the output encoding"
+      lean: "GraphIsoPalomar.cosetWord_injective"
+      module: "Challenge"
+      status: "proved"
+      note: "The coset machine's output word determines its answer."
+
+acknowledgements: >-
+  Mathlib and its contributors; the Lean FRO and the Palomar template; the expositions of
+  Babai, Helfgott, Bajpai and Dona, and Pyber.

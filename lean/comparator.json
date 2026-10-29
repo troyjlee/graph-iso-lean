@@ -1,0 +1,15 @@
+{
+  "challenge_module": "Challenge",
+  "solution_module": "Solution",
+  "theorem_names": [
+    "GraphIsoPalomar.gi_singleTape",
+    "GraphIsoPalomar.cosetWord_injective",
+    "GraphIsoPalomar.gi_coset_singleTape"
+  ],
+  "definition_names": [],
+  "permitted_axioms": [
+    "propext",
+    "Quot.sound",
+    "Classical.choice"
+  ]
+}
